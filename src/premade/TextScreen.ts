@@ -54,9 +54,19 @@ export interface TextScreenOptions {
      * Space between text entries
      */
     spaceBetweenEntries?: number;
+
+    /**
+     * Opacity of the screen background
+     */
+    opacity?: number;
 }
 
-export interface TextScreenUpdateOptions {}
+export interface TextScreenUpdateOptions {
+    /**
+     * Opacity of the screen background
+     */
+    opacity?: number;
+}
 
 export type EventSubscriber = (eventType: string, eventData: any) => void;
 
@@ -126,6 +136,7 @@ export class TextScreen implements Premade {
     protected _paddingLeft: number;
     protected _defaultTextStyle: any;
     protected _spaceBetweenEntries: number;
+    protected _opacity: number;
     protected _background?: PIXI.Graphics;
     protected _foreground?: PIXI.Container;
     protected _entries: (PIXI.Container | PIXI.Text | PIXI.Graphics)[] = [];
@@ -143,6 +154,7 @@ export class TextScreen implements Premade {
         this._paddingBottom = options.paddingBottom || 50;
         this._paddingLeft = options.paddingLeft || 50;
         this._spaceBetweenEntries = options.spaceBetweenEntries || 20;
+        this._opacity = options.opacity || 1;
         this._defaultTextStyle = {
             fontFamily: "Courier New",
             fontSize: 22,
@@ -172,6 +184,7 @@ export class TextScreen implements Premade {
         this._background.beginFill(this._backgroundColor);
         this._background.drawRect(0, 0, backgroundWidth, backgroundHeight);
         this._background.endFill();
+        this._background.alpha = this._opacity;
 
         this._background.pivot.set(backgroundWidth / 2, backgroundHeight / 2);
         this._background.position.set(this._width / 2, this._height / 2);
@@ -499,6 +512,10 @@ export class TextScreen implements Premade {
     update(deltaTime: number, updateOptions?: TextScreenUpdateOptions) {
         if (!this._currentAnimation || this._currentAnimation(deltaTime)) {
             this._currentAnimation = undefined;
+        }
+
+        if (updateOptions?.opacity && this._background) {
+            this._background.alpha = updateOptions.opacity;
         }
 
         this._elapsedTime += deltaTime;
