@@ -51,10 +51,14 @@ export interface TimeCounterOptions {
     defaultTextStyle?: PIXI.TextStyle;
 
     initialTime?: number;
+
+    opacity?: number;
 }
 
 export interface TimeCounterUpdateOptions {
     currentTime?: number;
+
+    opacity?: number;
 }
 
 export class TimeCounter implements Premade {
@@ -76,6 +80,8 @@ export class TimeCounter implements Premade {
     protected _marginTop: number;
     protected _marginLeft: number;
     protected _defaultTextStyle: any;
+    protected _opacity: number;
+    protected _background?: PIXI.Graphics;
 
     protected _timeText?: PIXI.Text;
     protected _timeValue: number = 0;
@@ -87,6 +93,7 @@ export class TimeCounter implements Premade {
         this._backgroundColor = options.backgroundColor || 0x002c2c;
         this._marginTop = options.marginTop || 90;
         this._marginLeft = options.marginLeft || 240;
+        this._opacity = options.opacity || 1;
         this._defaultTextStyle = {
             fontFamily: "Courier New",
             fontSize: 22,
@@ -113,19 +120,20 @@ export class TimeCounter implements Premade {
      * Generates a background graphic
      */
     _generateBackground() {
-        let _background = new PIXI.Graphics();
+        this._background = new PIXI.Graphics();
 
         let backgroundWidth = this._width - 2 * this._marginLeft;
         let backgroundHeight = this._height - 2 * this._marginTop;
 
-        _background.beginFill(this._backgroundColor);
-        _background.drawRect(0, 0, backgroundWidth, backgroundHeight);
-        _background.endFill();
+        this._background.beginFill(this._backgroundColor);
+        this._background.drawRect(0, 0, backgroundWidth, backgroundHeight);
+        this._background.endFill();
+        this._background.alpha = this._opacity;
 
-        _background.pivot.set(backgroundWidth / 2, backgroundHeight / 2);
-        _background.position.set(this._width / 2, this._height / 2);
+        this._background.pivot.set(backgroundWidth / 2, backgroundHeight / 2);
+        this._background.position.set(this._width / 2, this._height / 2);
 
-        return _background;
+        return this._background;
     }
 
     _generateTimeText() {
@@ -219,6 +227,10 @@ export class TimeCounter implements Premade {
      */
     update(time: number, updateOptions?: TimeCounterUpdateOptions) {
         this._render(time / 1000);
+
+        if (updateOptions?.opacity && this._background) {
+            this._background.alpha = updateOptions.opacity;
+        }
     }
 
     /**
