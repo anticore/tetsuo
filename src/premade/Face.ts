@@ -13,6 +13,8 @@ export interface FaceOptions {
      * Color of the object
      */
     color: THREE.Vector3;
+
+    lineMultiplier: number;
 }
 
 export interface FaceUpdateOptions {
@@ -26,6 +28,7 @@ export class Face implements Premade {
     /**
      * Path to the mesh geometry
      */
+
     geometryPath: string;
 
     /**
@@ -38,9 +41,12 @@ export class Face implements Premade {
      */
     mesh: THREE.Mesh;
 
+    lineMultiplier: number = 100;
+
     constructor(options?: FaceOptions) {
         this.geometryPath = options?.geometryPath || "";
         this.color = options?.color || new THREE.Vector3(0.11, 0.82, 0.58);
+        this.lineMultiplier = options?.lineMultiplier || 100;
 
         this.mesh = new THREE.Mesh();
     }
@@ -55,6 +61,7 @@ export class Face implements Premade {
                     side: THREE.DoubleSide,
                     uniforms: {
                         color: { value: this.color },
+                        lineMultiplier: { value: this.lineMultiplier },
                     },
 
                     fragmentShader: /*glsl*/ `
@@ -64,6 +71,7 @@ export class Face implements Premade {
     
                         uniform vec3 color;
                         uniform float iTime;
+                        uniform float lineMultiplier;
 
                         #if NUM_DIR_LIGHTS > 0
                             struct DirectionalLight {
@@ -83,8 +91,8 @@ export class Face implements Premade {
                             }
                         #endif
                             
-                            float v = abs(sin(5. * 100. * (vUv.y + iTime / 1.))) - 0.25;
-                            float bigv = sin(30. * vUv.y + iTime * 5.) + 0.5;
+                            float v = abs(sin(5. * lineMultiplier * (vUv.y + iTime / 1.))) - 0.25;
+                            float bigv = sin((lineMultiplier / 10.) * vUv.y + iTime * 5.) + 0.5;
                             gl_FragColor = vec4((color + bigv * 0.2).rgb * light * v, v);
                         }
                     `,

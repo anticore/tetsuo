@@ -39,6 +39,7 @@
 
             let face = new TETSUO.Premade.Face({
                 geometryPath: "./res/face.json",
+                lineMultiplier: 100,
             });
             face.prepare().then((mesh) => {
                 mesh.position.z = -5;
