@@ -1,7 +1,7 @@
 {
     "name": "@SolidSolutionsDev/tetsuo",
     "repository": "git://github.com/SolidSolutionsDev/tetsuo.git",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "main": "./dist/tetsuo.min.js",
     "types": "./dist/index.d.ts",
     "license": "MIT",
