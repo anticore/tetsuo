@@ -36,9 +36,9 @@
         "webpack-glsl-loader": "^1.0.1"
     },
     "scripts": {
-        "build:dev": "cross-env NODE_ENV=development webpack",
+        "build:dev": "./node_modules/.bin/cross-env NODE_ENV=development webpack",
         "watch": "npm run build:dev -- --watch",
-        "build:prod": "cross-env NODE_ENV=production webpack",
+        "build:prod": "./node_modules/.bin/cross-env NODE_ENV=production webpack",
         "serve": "live-server --port=6969 --no-browser --watch=dist,examples,dev",
         "docs": "typedoc src/index.ts",
         "test": "jest --detectOpenHandles --colors",
