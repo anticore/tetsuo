@@ -30,6 +30,7 @@
         "test": "jest --detectOpenHandles --colors",
         "test:watch": "yarn test -- --watch",
         "watch": "webpack --watch",
+        "build": "webpack",
         "dev": "concurrently \"yarn watch\" \"yarn serve\""
     },
     "dependencies": {
