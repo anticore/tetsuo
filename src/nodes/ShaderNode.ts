@@ -198,7 +198,6 @@ export class ShaderNode extends Node {
 
         // update default uniforms
         if (!this._noUpdateTime && this.id !== "root") {
-            console.log(this.id);
             this.uniforms["time"].value = totalTime;
         }
         this.uniforms["resolution"].value.set(this.width, this.height, 1);
