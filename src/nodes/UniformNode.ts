@@ -82,7 +82,6 @@ export class UniformNode extends Node {
                                 : key
                         )
                         .onChange((value: any) => {
-                            console.log("value", value, this.value);
                             if (this.value) {
                                 this.value[key] = value;
                             }

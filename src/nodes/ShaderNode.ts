@@ -250,11 +250,13 @@ export class ShaderNode extends Node {
      *
      * @param uniformID - Uniform id
      * @param value - Uniform initial value
+     * @param value - GUI config
      */
-    uniform(uniformID: string, value: any) {
+    uniform(uniformID: string, value: any, gui?: any) {
         let node = new UniformNode({
             id: uniformID,
             value,
+            gui,
         });
         this.addInput(node);
         return this;
